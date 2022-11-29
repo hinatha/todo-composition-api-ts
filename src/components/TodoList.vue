@@ -1,18 +1,18 @@
 <template>
   <div>
     <ul class="todolist">
-      <!-- Display state.todoList with todo as key -->
-      <li v-for="todo in state.todoList" :key="todo.todo">{{ todo.todo }}</li>
+        <!-- Display state.todoList with todo as key -->
+        <li v-for="todo in state.todoList" :key="todo.todo">{{ todo.todo }}</li>
     </ul>
-    <!-- TodoList component has TodoInput component inside it -->
-    <Todo-input />
+    <!-- add-todo is the event name of Todo-input -->
+    <!-- Call addTodoAction -->
+    <Todo-input @add-todo="addTodoAction" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive} from 'vue'
 import TodoInput from '../components/TodoInput.vue'
-
 
 export default defineComponent({
   // Define component as TodoList
@@ -24,20 +24,17 @@ export default defineComponent({
 
   setup() {
     // In case of lang="ts", define type inside reactive
-    const state = reactive<{ todoList: [{todo: String}, {todo: String}];}>({
-      // There are two temporary data
-      todoList: [
-          {
-            todo: 'todo1',
-          },
-          {
-            todo: 'todo2',
-          }
-
-      ]
+    // State receives todoList as argument and return copy of reactive state
+    const state = reactive<{todoList: Array<{todo: string}>}> ({
+      todoList: []
     });
-    return { state };
+
+    const addTodoAction = (value: string) => {
+      // Push the form value to todoList
+      state.todoList.push({todo: value})
+    };
+
+    return { state, addTodoAction };
   }
 });
-
 </script>
