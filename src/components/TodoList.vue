@@ -2,7 +2,10 @@
   <div>
     <ul class="todolist">
         <!-- Display state.todoList with todo as key -->
-        <li v-for="todo in state.todoList" :key="todo.todo">{{ todo.todo }}</li>
+        <!-- Call removeTodo method with index as an argument  -->
+        <li v-for="(todo, index) in state.todoList" :key="index">
+            {{ todo.todo }} <span @click="removeTodoAction(index)">X</span>
+        </li>
     </ul>
     <!-- add-todo is the event name of Todo-input -->
     <!-- Call addTodoAction -->
@@ -34,7 +37,12 @@ export default defineComponent({
       state.todoList.push({todo: value})
     };
 
-    return { state, addTodoAction };
+    const removeTodoAction = (index: number) => {
+      // Remove the todo of this index
+      state.todoList.splice(index,1)
+    };
+
+    return { state, addTodoAction, removeTodoAction };
   }
 });
 </script>
